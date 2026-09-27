@@ -9,6 +9,10 @@ imply production support or complete live-data validation. This repository
 contains a clean source snapshot, not previous private development history or
 test release archives.
 
+## Workflow
+
+![FinOps Multitool workflow: authenticate, set scope, choose a data source, collect read-only scan results, interpret findings, and export reports locally.](docs/images/finops-multitool-workflow.png)
+
 ## Download
 
 - [Download the source ZIP](https://github.com/z-larsen/FinOps-Multitool-TUI/archive/refs/heads/main.zip)

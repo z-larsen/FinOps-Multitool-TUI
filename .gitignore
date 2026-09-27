@@ -2,6 +2,9 @@
 !/.gitignore
 !/LICENSE
 !/README.md
+!/docs/
+!/docs/images/
+!/docs/images/finops-multitool-workflow.png
 !/FinOpsToolkit.psm1
 !/en-US/
 !/en-US/*.psd1
