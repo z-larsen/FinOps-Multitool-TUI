@@ -4,7 +4,7 @@
 
 Terminal interface for running FinOps scans against Azure subscriptions without GUI dependencies. PowerShell 7 is required.
 
-The [PR test workflow](../../../../.github/workflows/dev.yml) includes Windows, macOS, and Ubuntu jobs for the multitool suites and packaged launcher. Real signed Parquet integration runs on Windows and Ubuntu. The jobs require no Azure sign-in or deployment credentials. Use each platform's result for the tested commit; Windows results don't establish native compatibility.
+This standalone preview contains runtime files, not an automated scan test suite or CI workflow. Windows is the documented launch path; native Linux and macOS operation has not been verified for this distribution. See the [distribution README](../../README.md#scope-and-validation) for the local packaging checks performed.
 
 NuGet signed-package verification [isn't supported on macOS](https://learn.microsoft.com/dotnet/core/tools/nuget-signed-package-verification#macos). Use Kusto or available CSV exports there. The reader doesn't bypass signature verification to load Parquet.
 
@@ -402,56 +402,9 @@ $costByTag = ConvertTo-CostByTagFromHub -HubData $hubData -ExistingTags $tagInve
 
 ## Validation and review coverage
 
-Run the normal toolkit unit and lint gates from the repository root:
+The [distribution README](../../README.md#scope-and-validation) records the local syntax, import, JSON, and template checks performed for this package. An automated scan test suite, build scripts, and CI results are not included here.
 
-```powershell
-./.build/start.ps1 -Task Test.PowerShell.All
-```
-
-Run the focused integration checks in a fresh PowerShell 7 session from the repository root. Install Pester 6.0.0 and the Az modules listed in the workflow first. These tests build in a temporary directory, replace Azure access with synthetic responses, and use isolated package caches. They don't scan subscriptions or overwrite the checkout's release output. Package restore and signature verification require network access to the configured NuGet feeds and certificate services.
-
-```powershell
-Import-Module Pester -RequiredVersion 6.0.0
-$paths = @('src/powershell/Tests/Integration/MultitoolPackage.Tests.ps1')
-$minimumPassed = 3
-if (-not $IsMacOS) {
-  $paths += 'src/powershell/Tests/Integration/MultitoolParquet.Tests.ps1'
-  $minimumPassed += 2
-}
-$configuration = New-PesterConfiguration
-$configuration.Run.Path = $paths
-$configuration.Run.PassThru = $true
-$configuration.Output.Verbosity = 'Detailed'
-$result = Invoke-Pester -Configuration $configuration
-if ($null -eq $result -or $result.Result -ne 'Passed' -or
-  $result.PassedCount -lt $minimumPassed -or $result.FailedCount -ne 0 -or
-  $result.SkippedCount -ne 0 -or $result.NotRunCount -ne 0 -or
-  $result.FailedContainersCount -ne 0 -or $result.FailedBlocksCount -ne 0 -or
-  $result.Containers.Count -ne $paths.Count) {
-  throw 'Multitool integration validation failed or was incomplete.'
-}
-```
-
-The workflow records the tested merge commit, host, PowerShell version, and test counts in each job summary. Platform-specific `multitool-tests-*` artifacts retain NUnit results for 14 days. Only the two named test-result XML files are uploaded, not scan reports, package caches, or build output. The macOS summary explicitly records that signed Parquet integration wasn't run.
-
-### Regression map
-
-| Review concern                                                                                  | Implementation                                                                                                          | Executable evidence                                                                                                                                                                                                     |
-| ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Incomplete tag maps or one failed subscription become misleading whole-scope costs              | [Cost by tag](modules/Get-CostByTag.ps1)                                                                                | [CostQueryPagination.Tests.ps1](../../Tests/Unit/CostQueryPagination.Tests.ps1), `Cost-by-tag coverage and currency`                                                                                                    |
-| Missing or mixed currencies and mismatched usage produce monetary rates                         | [AI metrics](modules/Get-AIWorkloadMetrics.ps1), [unit economics](modules/Get-UnitEconomics.ps1)                        | [CostQueryPagination.Tests.ps1](../../Tests/Unit/CostQueryPagination.Tests.ps1), `Parsed query consumers` and `Savings and unit totals`                                                                                 |
-| Shared-cost or VM Hub aggregation bypasses currency validation                                  | [Shared allocation](modules/Get-SharedCostAllocation.ps1), [VM costs](modules/Get-VmCostBreakdown.ps1)                  | [MultitoolSafety.Tests.ps1](../../Tests/Unit/MultitoolSafety.Tests.ps1), Hub currency rejection checks; the existing schema guard is retained                                                                           |
-| macOS permission bits or Windows-only commands break native tests                               | [Private directories](modules/helpers/Read-FinOpsHubData.ps1)                                                           | [ParquetPackageClient.Tests.ps1](../../Tests/Unit/ParquetPackageClient.Tests.ps1), `Private data directories`; [MultitoolSafety.Tests.ps1](../../Tests/Unit/MultitoolSafety.Tests.ps1), command resolution              |
-| Advisor and reservation savings combine incompatible currencies                                 | [Currency helpers](modules/helpers/Resolve-CurrencyLabel.ps1)                                                           | [CurrencyLabel.Tests.ps1](../../Tests/Unit/CurrencyLabel.Tests.ps1), currency labels; real consumer/report checks in [MultitoolSafety.Tests.ps1](../../Tests/Unit/MultitoolSafety.Tests.ps1)                            |
-| Billing pages, membership failures, or empty successful responses disappear                     | [List paging](modules/helpers/Get-CostQueryResponsePage.ps1), [billing scope](modules/helpers/Resolve-BillingScope.ps1) | [CostQueryPagination.Tests.ps1](../../Tests/Unit/CostQueryPagination.Tests.ps1), `Paged billing discovery`, including the real resolver and consumers                                                                   |
-| Missing inventory, metrics, alerts, or carbon reports become healthy or zero                    | [Scan modules](modules)                                                                                                 | [MultitoolSafety.Tests.ps1](../../Tests/Unit/MultitoolSafety.Tests.ps1), tag, anomaly, carbon, idle VM, and scanner domain contexts                                                                                     |
-| Hub discovery or one converter failure silently changes data sources or suppresses another scan | [Launcher](Invoke-FinOpsMultitool.ps1)                                                                                  | [Start-FinOpsMultitool.Tests.ps1](../../Tests/Unit/Start-FinOpsMultitool.Tests.ps1), `Public source smoke tests`                                                                                                        |
-| Showback rounding loses cents or creates negative allocations                                   | [Usage allocation](modules/Get-UsageProportionalAllocation.ps1)                                                         | [MultitoolSafety.Tests.ps1](../../Tests/Unit/MultitoolSafety.Tests.ps1), allocation and scanner domain checks                                                                                                           |
-| Reports expose unescaped values or save to unsafe locations                                     | [Report writer](Invoke-FinOpsMultitool.ps1)                                                                             | [MultitoolSafety.Tests.ps1](../../Tests/Unit/MultitoolSafety.Tests.ps1), `Automatic report storage` and `CSV export projections`                                                                                        |
-| Restore-only tests miss actual Parquet data loss                                                | [Parquet reader](modules/helpers/Read-FinOpsHubData.ps1)                                                                | [MultitoolParquet.Tests.ps1](../../Tests/Integration/MultitoolParquet.Tests.ps1), real cold/cached processes, signatures, Snappy, multiple row groups, nested metadata, positive/zero/negative/null costs, and currency |
-| Source imports miss packaging errors                                                            | [Module builder](../../../../.build/BuildHelper/Build-PsModule.ps1)                                                     | [MultitoolPackage.Tests.ps1](../../Tests/Integration/MultitoolPackage.Tests.ps1), exact directory casing, built manifest, public launcher, and CSV/HTML/text output                                                     |
-
-These checks don't establish live Azure API behavior or current tenant access. A final live smoke test must use an explicitly selected subscription and matching cost periods and currencies. The three follow-ups in [issue #2335](https://github.com/microsoft/finops-toolkit/issues/2335) remain deferred to v16: storage error classification, a static read-only scanner guard, and private launcher help. They aren't claimed as completed by these tests.
+These packaging checks don't establish live Azure API behavior or current tenant access. A live smoke test must use an explicitly selected subscription and matching cost periods and currencies. Review failed scans, missing data, and permission diagnostics before relying on results. Never upload raw scan reports or customer data when reporting an issue.
 
 ## File structure
 

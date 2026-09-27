@@ -1,10 +1,8 @@
 # FinOps Multitool TUI
 
 An **unofficial, standalone preview snapshot** of the FinOps Multitool terminal
-UI, shared so you can download and try it while toolkit availability is pending.
-This is not an official Microsoft release, not the full
-[FinOps toolkit](https://github.com/microsoft/finops-toolkit), and not the older
-WPF Multitool.
+UI. Download it to run interactive FinOps scans against Azure subscriptions.
+This is not an official Microsoft release or the older WPF Multitool.
 
 The runtime retains its **v15.0-dev-wip.20260924.1** version label. Preview status does not
 imply production support or complete live-data validation. This repository
@@ -68,11 +66,11 @@ first, then use `-NonInteractive` and explicit scope/scan parameters. Do not
 assume the current Azure context belongs to the intended tenant.
 
 The root `FinOpsToolkit.psm1` loader is also included for compatibility. Importing
-it exports the additional toolkit commands packaged in this snapshot, including
+it exports the additional commands packaged in this snapshot, including
 commands unrelated to the TUI. The direct entry-point instructions above avoid
 importing that broader command surface. Only the Multitool scan modules are
 described as read-only; this is not a blanket statement about every packaged
-toolkit command.
+command.
 
 ## Reports and privacy
 
@@ -104,20 +102,20 @@ FinOpsToolkitRoot = '..\FinOps-Multitool-TUI'
 That setting belongs **inside the launcher's PSD1 configuration**, not at a
 PowerShell prompt. Use `..\FinOps-Multitool-TUI-main` instead if you kept the
 ZIP's original folder name. The launcher recognizes the standalone `Public`
-and `Private` layout as well as a toolkit checkout's `src\powershell` layout.
+and `Private` layout as well as the alternative `src\powershell` source layout.
 
 **FTKLocal is not bundled in this snapshot.** The existing FTKLocal scripts
-expect a full toolkit source checkout with `src\powershell`. Keep that checkout
+expect a source installation with `src\powershell`. Keep that installation
 configured for FTKLocal, or leave `FTKLocalScript` empty when using only this
 standalone preview. Synthetic hub costs do not make other scans offline or
 prevent access to real Azure tenant information.
 
 ## Scope and validation
 
-This is the runtime distribution, not the full toolkit test suite or CI setup.
-Test links in the [detailed documentation](Private/FinOpsMultitool/README.md)
-refer to the full toolkit checkout. Publishing or loading the code does not
-prove that every Azure scan works for your identity and data source.
+This runtime distribution does not include an automated scan test suite or CI
+setup. See the [detailed documentation](Private/FinOpsMultitool/README.md) for
+scan behavior and limitations. Publishing or loading the code does not prove
+that every Azure scan works for your identity and data source.
 
 Use a test scope first and review results before wider use. Report reproducible
 issues with sanitized details only.
