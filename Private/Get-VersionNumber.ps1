@@ -4,5 +4,5 @@
 function Get-VersionNumber
 {
     param()
-    return '15.0-dev-wip.20260924.1'
+    return '15.0-dev-wip.20260928.1'
 }

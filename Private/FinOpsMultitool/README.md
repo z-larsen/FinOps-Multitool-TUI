@@ -102,6 +102,10 @@ Each completed run automatically saves one CSV file per selected scan, a `FinOps
 
 The HTML report opens with the **FinOps story**: selected tenant and subscriptions, observed spend, largest resource costs, scan status, and follow-up actions. Actual costs stay separate by subscription, currency, and reported period. Full-month forecasts are separate estimates, and unavailable amounts aren't treated as zero. Failed scans and evidence gaps link to their detailed results.
 
+The **KPI reference** tab lists all 27 catalog entries, including those whose source scans weren't selected. Search by name, definition, calculation, input, or source scan, and filter by **Computed**, **Unavailable**, **Not run**, or **Informational**. Each entry includes its formula, required inputs, interpretation, and limits. Source links open the relevant selected scan; informational entries remain reference-only when a related scan fails.
+
+**Calculation and thresholds** disclosures in Unit Economics, Idle VMs, Storage Tier Advice, and Budget Status explain the cost-share denominator, current-capacity basis, screening windows, and budget forecast availability. Measured zero values remain valid results. A computed KPI can be an estimate or proxy, not proof of an optimized environment. If the KPI catalog can't load, the ordinary HTML, CSV, and text exports remain available with a visible warning.
+
 The story highlights up to five positive resource costs per subscription, currency, and period. **All returned resource costs** opens the complete returned resource table, including credits and any resource IDs and periods the data source provided. Source query limits can omit resources; this view doesn't prove the inventory is complete. A high cost alone isn't evidence of waste.
 
 By default, reports go under the current user's local application data directory, in `FinOpsToolkit/Multitool/Reports`. On Windows, that's usually `%LOCALAPPDATA%\FinOpsToolkit\Multitool\Reports`. Each run creates a timestamped, uniquely named subfolder. The terminal prints its full path. `-OutputPath` selects a different local parent folder; it doesn't replace reports from an earlier run.

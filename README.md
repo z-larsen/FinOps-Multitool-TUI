@@ -5,7 +5,7 @@ An **unofficial, standalone preview snapshot** of the FinOps Multitool terminal
 UI. Download it to run interactive FinOps scans against Azure subscriptions.
 This is not an official Microsoft release or the older WPF Multitool.
 
-The runtime retains its **v15.0-dev-wip.20260924.1** version label. Preview status does not
+The runtime uses the **v15.0-dev-wip.20260928.1** version label. Preview status does not
 imply production support or complete live-data validation. This repository
 contains a clean source snapshot, not previous private development history or
 test release archives.
@@ -303,11 +303,19 @@ Finish every source-specific walkthrough with these checks:
   the environment is optimized. **Limited data**, **No data**, and **Failed**
   need different follow-up. Missing data isn't zero spend, and a high cost
   alone isn't evidence of waste.
-4. Use the category details, per-scan CSVs, and `$FinOpsResults` for follow-up
+4. Open **KPI reference** to search all 27 catalog entries or filter by
+    **Computed**, **Unavailable**, **Not run**, or **Informational**. Expand
+    **Calculation and interpretation** for the formula, required inputs, and
+    limitations. Computed means a value was derived, not that it meets a
+    universal target. Some values are estimates or proxies.
+5. Use **Calculation and thresholds** in Unit Economics, Idle VMs, Storage Tier
+    Advice, and Budget Status to check the denominator, measurement window, or
+    screening criteria. Missing measurements aren't treated as measured zero.
+6. Use the category details, per-scan CSVs, and `$FinOpsResults` for follow-up
   analysis. Some HTML sections show only a subset of the returned rows. Check
   currency, period, cost basis, and whether a value is measured or estimated
   before comparing it with another source.
-5. Agree on a next action with the workload owner. The scans don't apply the
+7. Agree on a next action with the workload owner. The scans don't apply the
   recommendations. Review sensitive data before sharing any report and follow
   [Reports and privacy](#reports-and-privacy).
 
@@ -382,21 +390,47 @@ prevent access to real Azure tenant information.
 
 ## Scope and validation
 
-This runtime distribution does not include an automated scan test suite or CI
-setup. See the [detailed documentation](Private/FinOpsMultitool/README.md) for
+This runtime distribution includes a local source-parity check, not an automated
+Azure scan test suite or CI setup. See the [detailed documentation](Private/FinOpsMultitool/README.md) for
 scan behavior and limitations. Publishing or loading the code does not prove
 that every Azure scan works for your identity and data source.
 
 Use a test scope first and review results before wider use. Report reproducible
 issues with sanitized details only.
 
-For this public packaging, all 79 PowerShell files passed syntax parsing, the
-KPI catalog parsed as JSON, and the root module and public entry point loaded
+For the original public packaging, all 79 PowerShell files passed syntax parsing,
+the KPI catalog parsed as JSON, and the root module and public entry point loaded
 without running scans. The bundled empty Power BI template had its opaque
 encrypted `SecurityBindings` entry and corresponding content-type reference
 removed; all other template payloads were preserved. The sanitized template
 opened successfully in Power BI Desktop with all four report pages present.
 These are local packaging checks, not end-to-end Azure scan tests.
+
+The KPI parity update passed syntax parsing for all 80 PowerShell files and
+43 existing Toolkit report and unit-cost regression cases against the
+standalone runtime on Windows; one Linux-only case was skipped. These cases
+use synthetic data and mocked service responses. Browser-event checks covered
+KPI search, status filters, source links, keyboard handlers, and narrow layouts;
+they don't establish live Azure data access.
+
+### Keep the runtime in parity
+
+The public launcher and shared Multitool runtime should match the Toolkit
+implementation. Distribution differences are limited to standalone version
+loading and report labels, documentation, and the sanitized Power BI template.
+The KPI helper and catalog are copied unchanged; the report renderer retains
+four standalone version overlays.
+
+To compare a future refresh with a local Toolkit source checkout, run:
+
+```powershell
+.\scripts\Test-ToolkitParity.ps1 -ToolkitRoot '<path-to-finops-toolkit-repository>'
+```
+
+The [parity check](scripts/Test-ToolkitParity.ps1) compares the public launcher
+and runtime files without contacting Azure or changing either checkout. It
+fails on unexpected file or content differences. Review the source revision
+before syncing; a passing comparison doesn't establish live service compatibility.
 
 ## License
 

@@ -2,6 +2,8 @@
 !/.gitignore
 !/LICENSE
 !/README.md
+!/scripts/
+!/scripts/Test-ToolkitParity.ps1
 !/docs/
 !/docs/images/
 !/docs/images/finops-multitool-startup.png
