@@ -5,7 +5,7 @@ An **unofficial, standalone preview snapshot** of the FinOps Multitool terminal
 UI. Download it to run interactive FinOps scans against Azure subscriptions.
 This is not an official Microsoft release or the older WPF Multitool.
 
-The runtime uses the **v15.0-dev-wip.20260928.1** version label. Preview status does not
+The runtime uses the **v15.0-dev-wip.20261001.1** version label. Preview status does not
 imply production support or complete live-data validation. This repository
 contains a clean source snapshot, not previous private development history or
 test release archives.
@@ -84,6 +84,11 @@ For an unattended run, authenticate separately with the intended Azure identity
 first, then use `-NonInteractive` and explicit scope/scan parameters. Do not
 assume the current Azure context belongs to the intended tenant.
 
+An explicit `-SubscriptionId` must resolve in that tenant. The tool stops on an
+unresolved or mismatched subscription instead of searching other tenants or
+widening the scan. To target another tenant, sign in to it first. A valid
+subscription selection changes context only in the current PowerShell process.
+
 The root `FinOpsToolkit.psm1` loader is also included for compatibility. Importing
 it exports the additional commands packaged in this snapshot, including
 commands unrelated to the TUI. The direct entry-point instructions above avoid
@@ -107,6 +112,17 @@ replace Azure sign-in or the permissions needed by other scans.
 cost-dependent scans, but remaining scans can still call services such as
 Azure Monitor, Advisor, and Azure Policy. There is no `Export` value or input-file
 parameter on `Start-FinOpsMultitool`; `-OutputPath` sets the report destination.
+
+Automatic Hub discovery stays within the selected tenant and subscriptions.
+If a Hub can't be verified because discovery probes fail, the tool warns and
+continues to the API/GraphOnly menu, or defaults to API with `-NonInteractive`.
+This also applies when every probe fails. An explicit `-DataSource Hub` never
+switches to API automatically. Explicit API and GraphOnly choices skip Hub discovery.
+
+Provider-discovery exceptions for a detected Hub warn and allow its storage
+reader to be considered, with the existing size and reachability warnings.
+The scan runner keeps the selected storage path without rediscovering a provider.
+Explicit Kusto endpoints and failed Kusto cost queries never silently switch sources.
 
 ## Run a scan from start to finish
 
