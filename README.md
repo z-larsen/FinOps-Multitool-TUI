@@ -105,13 +105,28 @@ replace Azure sign-in or the permissions needed by other scans.
 | --- | --- | --- |
 | FinOps hub with Azure Data Explorer or a compatible Microsoft Fabric KQL database | **FinOps Hub**, with the query endpoint and database configured when needed | Cost queries aggregate in the database and return summaries to PowerShell. |
 | Recognized FinOps hub with storage only | **FinOps Hub**, using the storage reader when no Kusto provider is selected | Reads supported Hub Parquet or CSV data into local memory. Use this path for small datasets. |
-| Regular Cost Management export in a storage account or local files | No standalone export option in this TUI | Use an API scan, or query the data after it is available through a compatible FinOps hub. An export file alone is not a Hub connection. |
+| Regular Cost Management CSV/CSV.gz export in Azure Storage | **Cost Management exports (CSV storage)** or `-DataSource Export` | Discovers selected-scope definitions and export-like storage containers. Reads one chosen export, filters row subscriptions, and labels partial coverage. No Hub required. |
+| Parquet exports or downloaded local files | Not supported by the ordinary CSV export source | Use a compatible FinOps hub for Parquet. `-OutputPath` is a report destination, not an input-file parameter. |
 | No hub, or you want to query Cost Management directly | **Cost Management API** or `-DataSource API` | Uses the Cost Management APIs for cost scans. Costs can lag usage, and API throttling can extend the run. |
 
-`-DataSource` accepts `Hub`, `API`, and `GraphOnly`. `GraphOnly` excludes
+`-DataSource` accepts `Hub`, `Export`, `API`, and `GraphOnly`. `GraphOnly` excludes
 cost-dependent scans, but remaining scans can still call services such as
-Azure Monitor, Advisor, and Azure Policy. There is no `Export` value or input-file
-parameter on `Start-FinOpsMultitool`; `-OutputPath` sets the report destination.
+Azure Monitor, Advisor, and Azure Policy. `Export` reads ActualCost or FOCUS
+BilledCost CSV data for cost totals, resource costs, cost by tag, and the months
+present in the selected run. Separate financial API scans are excluded, while
+inventory scans can still query Azure. Export failures never switch to live costs.
+There is no local input-file parameter; `-OutputPath` sets the report destination.
+
+To skip Hub detection and look for ordinary exports directly, run
+`Start-FinOpsMultitool -DataSource Export`. Keep the intended tenant and subscriptions
+selected. Choose an export from the displayed destinations; unattended mode requires
+exactly one candidate. Storage Blob Data Reader or equivalent data access and a
+permitted network path are required. The picker discovers subscription exports,
+exports at management-group ancestors, and exports at linked billing accounts.
+It also discovers likely storage destinations automatically; you don't need to know
+a container name. Container metadata is checked before blob-service enumeration,
+and unavailable locations produce a summary rather than a warning flood. Use
+`-Verbose` for details. CSV parts are loaded into memory; use Kusto for very large datasets.
 
 Automatic Hub discovery stays within the selected tenant and subscriptions.
 If a Hub can't be verified because discovery probes fail, the tool warns and
