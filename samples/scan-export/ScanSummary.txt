@@ -1,0 +1,30 @@
+FinOps Multitool Scan Summary
+Generated: 2026-10-03 00:37:37 UTC
+Subscriptions: Contoso-Production-EastUS, Contoso-Production-WestEurope, Contoso-Analytics-Prod, Contoso-Shared-Services, Contoso-Dev-Test, Contoso-Sandbox
+Total findings: 61
+
+Orphaned Resources: 1 findings
+Idle VMs: 1 findings
+Storage Tier Advice: 1 findings
+Legacy Resources: 1 findings
+AHB Opportunities: 1 findings
+Tag Inventory: 1 findings
+Tag Recommendations: 1 findings
+Policy Inventory: 1 findings
+Policy Recommendations: 1 findings
+Cost Data: 1 findings
+Resource Costs: 14 findings
+Cost by Tag: 1 findings
+Cost Trend: 1 findings
+Unit Economics: 1 findings
+AI Workload Metrics: 1 findings
+Reservation Advice: 1 findings
+Commitment Utilization: 1 findings
+Savings Realized: 1 findings
+Budget Status: 1 findings
+Budget History: 24 findings
+Anomaly Alerts: 1 findings
+Optimization Advice: 1 findings
+Carbon Emissions: 1 findings
+Contract Info: 1 findings
+MACC Commitment: 1 findings

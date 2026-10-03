@@ -1,0 +1,14 @@
+"RecordType","Category","ResourceName","ResourceGroup","SubscriptionId","Location","Detail","Impact","Summary.HasData","Summary.TotalCount","Summary.ScannedSubs","Count"
+"LegacyResources","Basic Load Balancer","lb-weu-legacy-edge","rg-prod-weu-network","aaaaaaaa-0002-4a1a-8a1a-000000000002","westeurope","Basic-SKU load balancer (retires Sep 2025) - migrate to Standard","High","True","8","6",
+"LegacyResources","Basic Public IP","pip-eus2-bastion-old","rg-prod-eus2-network","aaaaaaaa-0001-4a1a-8a1a-000000000001","eastus2","Basic-SKU public IP (retires Sep 2025) - migrate to Standard","High","True","8","6",
+"LegacyResources","Legacy VM Family","sap-bridge-01","rg-prod-eus2-sap","aaaaaaaa-0001-4a1a-8a1a-000000000001","eastus2","Standard_D3 (v1 - upgrade to current generation)","High","True","8","6",
+"LegacyResources","Legacy VM Family","etl-control-01","rg-analytics-prod-compute","aaaaaaaa-0003-4a1a-8a1a-000000000003","eastus","Standard_A4 (v1 - upgrade to current generation)","High","True","8","6",
+"LegacyResources","Legacy VM Family","lab-runner-legacy01","rg-devtest-labs","aaaaaaaa-0005-4a1a-8a1a-000000000005","centralus","Standard_DS3 (v1 - upgrade to current generation)","High","True","8","6",
+"LegacyResources","Legacy VM Family","demo-legacy-vm01","rg-demo-fallback","aaaaaaaa-0006-4a1a-8a1a-000000000006","eastus","Standard_D2 (v1 - upgrade to current generation)","High","True","8","6",
+"LegacyResources","Unmanaged Disk","sql-staging-vm01","rg-analytics-prod-sql","aaaaaaaa-0003-4a1a-8a1a-000000000003","eastus","VM uses unmanaged (VHD) OS disk - migrate to managed disks","High","True","8","6",
+"LegacyResources","HDD Managed Disk","disk-shared-dpm-archive01","rg-shared-services-backup","aaaaaaaa-0004-4a1a-8a1a-000000000004","centralus","512 GB HDD (Standard_LRS) - consider Standard/Premium SSD","Low","True","8","6",
+"Summary.ByCategory","Legacy VM Family",,,,,,,"True","8","6","4"
+"Summary.ByCategory","Basic Load Balancer",,,,,,,"True","8","6","1"
+"Summary.ByCategory","Basic Public IP",,,,,,,"True","8","6","1"
+"Summary.ByCategory","HDD Managed Disk",,,,,,,"True","8","6","1"
+"Summary.ByCategory","Unmanaged Disk",,,,,,,"True","8","6","1"

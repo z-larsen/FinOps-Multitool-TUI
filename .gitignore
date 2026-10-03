@@ -8,6 +8,13 @@
 !/docs/images/
 !/docs/images/finops-multitool-startup.png
 !/docs/images/finops-multitool-workflow.png
+!/docs/images/finops-multitool-running-scans.png
+!/samples/
+!/samples/scan-export/
+!/samples/scan-export/README.md
+!/samples/scan-export/FinOpsReport.html
+!/samples/scan-export/ScanSummary.txt
+!/samples/scan-export/*.csv
 !/FinOpsToolkit.psm1
 !/en-US/
 !/en-US/*.psd1

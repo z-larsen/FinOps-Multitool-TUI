@@ -146,6 +146,8 @@ Prepare the session once, follow the path for your data source, and finish with
 use one subscription so you can check access and data coverage before expanding
 the scope. They don't create a hub, configure an export, or change Azure resources.
 
+![Scans running in the terminal with a progress bar, per-scan result counts, and elapsed time for each module.](docs/images/finops-multitool-running-scans.png)
+
 ### Prepare your session
 
 1. Complete the [prerequisites](#prerequisites) and open PowerShell 7 in the
@@ -320,6 +322,9 @@ for the selected scope, without deploying ingestion infrastructure. Run time
 depends on the selected scans, scope, access, and service throttling.
 
 ## Review and share the results
+
+Want to see the output before running anything? [Browse a complete sample export](samples/scan-export)
+with the HTML report, per-scan CSVs, and the text summary. That data is synthetic.
 
 Finish every source-specific walkthrough with these checks:
 

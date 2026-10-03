@@ -1,0 +1,7 @@
+"SubscriptionId","Forecast","ActualPeriod","Currency","Actual","ForecastSource"
+"aaaaaaaa-0002-4a1a-8a1a-000000000002","129500","Month to date (UTC query window) - synthetic demo data","USD","68214.1","Forecast"
+"aaaaaaaa-0003-4a1a-8a1a-000000000003","79300","Month to date (UTC query window) - synthetic demo data","USD","41760.32","Forecast"
+"aaaaaaaa-0005-4a1a-8a1a-000000000005","14450","Month to date (UTC query window) - synthetic demo data","USD","7640.18","Forecast"
+"aaaaaaaa-0006-4a1a-8a1a-000000000006","3400","Month to date (UTC query window) - synthetic demo data","USD","1815.92","Forecast"
+"aaaaaaaa-0001-4a1a-8a1a-000000000001","268900","Month to date (UTC query window) - synthetic demo data","USD","142380.55","Forecast"
+"aaaaaaaa-0004-4a1a-8a1a-000000000004","43100","Month to date (UTC query window) - synthetic demo data","USD","22905.47","Forecast"

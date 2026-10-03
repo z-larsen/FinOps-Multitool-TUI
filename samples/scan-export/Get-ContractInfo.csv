@@ -1,0 +1,2 @@
+"AccountName","AccountId","AgreementType","FriendlyType","AccountStatus","CoverageIncomplete","ReadErrors","Note","SoldToCountry"
+"Contoso Enterprise Agreement","EA-7824510","EnterpriseAgreement","Enterprise Agreement (EA)","Active","False","[]","Demo harness synthetic contract data for Contoso-Production-EastUS.","United States"

@@ -1,0 +1,2 @@
+"RecordType","Scan","Status","Error","Summary.HasMacc","Summary.Applicable","Summary.Reason","Summary.CoverageIncomplete"
+"Status","Get-MaccCommitment","No data","","False","False","MACC commitment data is not presented for the synthetic EnterpriseAgreement demo tenant.","False"
