@@ -146,6 +146,8 @@ Prepare the session once, follow the path for your data source, and finish with
 use one subscription so you can check access and data coverage before expanding
 the scope. They don't create a hub, configure an export, or change Azure resources.
 
+![Scan selection menu grouped by category, with 25 of 26 scans selected and Billing Structure left off by default.](docs/images/finops-multitool-select-scans.png)
+
 ![Scans running in the terminal with a progress bar, per-scan result counts, and elapsed time for each module.](docs/images/finops-multitool-running-scans.png)
 
 ### Prepare your session
@@ -322,6 +324,8 @@ for the selected scope, without deploying ingestion infrastructure. Run time
 depends on the selected scans, scope, access, and service throttling.
 
 ## Review and share the results
+
+![Cost by tag results in the terminal, with per-tag spend, untagged totals, FinOps KPIs, and allocation guidance, using fictional tag values.](docs/images/finops-multitool-scan-results.png)
 
 Want to see the output before running anything? [Browse a complete sample export](samples/scan-export)
 with the HTML report, per-scan CSVs, and the text summary. That data is synthetic.
