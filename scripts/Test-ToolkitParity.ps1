@@ -1,6 +1,6 @@
 ###########################################################################
 # TEST-TOOLKITPARITY.PS1
-# COMPARE THE STANDALONE MULTITOOL WITH A TOOLKIT SOURCE CHECKOUT
+# COMPARE THE STANDALONE FINOPS EXPLORER TUI WITH A TOOLKIT SOURCE CHECKOUT
 ###########################################################################
 # Purpose: Detect shared runtime drift without running scans or changing files.
 # Author: Zac Larsen
@@ -59,8 +59,8 @@ foreach ($relativePath in @($sourceFiles.Keys + $targetFiles.Keys | Sort-Object 
                 Replacement = ''
             }
             @{
-                Text = '<title>FinOps Multitool Report $reportVersion &mdash; $timestamp</title>'
-                Replacement = '<title>FinOps Multitool Report &mdash; $timestamp</title>'
+                Text = '<title>FinOps Explorer TUI Report $reportVersion &mdash; $timestamp</title>'
+                Replacement = '<title>FinOps Explorer TUI Report &mdash; $timestamp</title>'
             }
             @{
                 Text = '<p class="meta">Version: $reportVersion &nbsp;|&nbsp; Generated:'
@@ -80,18 +80,20 @@ foreach ($relativePath in @($sourceFiles.Keys + $targetFiles.Keys | Sort-Object 
     }
 }
 
-$entryPoint = 'Public/Start-FinOpsMultitool.ps1'
-$sourceEntry = Join-Path $toolkitPowerShell $entryPoint
-$targetEntry = Join-Path $standaloneRoot $entryPoint
-if ((Get-FileHash -LiteralPath $sourceEntry).Hash -ne (Get-FileHash -LiteralPath $targetEntry).Hash) {
-    $differences.Add("Public launcher differs: $entryPoint")
+$entryPoints = @('Public/Start-FinOpsExplorer.ps1', 'Public/Start-FinOpsMultitool.ps1')
+foreach ($entryPoint in $entryPoints) {
+    $sourceEntry = Join-Path $toolkitPowerShell $entryPoint
+    $targetEntry = Join-Path $standaloneRoot $entryPoint
+    if ((Get-FileHash -LiteralPath $sourceEntry).Hash -ne (Get-FileHash -LiteralPath $targetEntry).Hash) {
+        $differences.Add("Public launcher differs: $entryPoint")
+    }
 }
 if ($differences.Count -gt 0) { throw ($differences -join [Environment]::NewLine) }
 
 [pscustomobject]@{
     Result = 'Passed'
     RuntimeFilesCompared = $sourceFiles.Count
-    PublicLauncher = 'Identical'
+    PublicLaunchers = 'Identical'
     VersionOverlays = 4
     ExcludedDistributionFiles = $exceptions
 }

@@ -1,6 +1,6 @@
 <!-- markdownlint-disable -->
 
-# FinOps multitool terminal UI (TUI)
+# FinOps Explorer terminal UI (TUI)
 
 Terminal interface for running FinOps scans against Azure subscriptions without GUI dependencies. PowerShell 7 is required.
 
@@ -116,7 +116,7 @@ Guidance includes FinOps Foundation best practices, actionable next steps, and l
 - **Request limit or temporary problem** (429, 408, or a 5xx response) — Says it isn't a permission problem and suggests running the scan again. The HTML report gives the same hint, so it doesn't point you to roles that aren't the cause.
 - **No data** — Explains whether the module requires specific resources (e.g., "Returns empty if no budgets are configured")
 
-Each completed run automatically saves one CSV file per selected scan, a `FinOpsReport.html` summary, and a `ScanSummary.txt` text summary on the machine running the multitool. Failed or empty scans have a CSV status record. There's no export prompt or format picker.
+Each completed run automatically saves one CSV file per selected scan, a `FinOpsReport.html` summary, and a `ScanSummary.txt` text summary on the machine running FinOps Explorer. Failed or empty scans have a CSV status record. There's no export prompt or format picker.
 
 The HTML report opens with the **FinOps story**: selected tenant and subscriptions, observed spend, largest resource costs, scan status, and follow-up actions. Actual costs stay separate by subscription, currency, and reported period. Full-month forecasts are separate estimates, and unavailable amounts aren't treated as zero. Failed scans and evidence gaps link to their detailed results.
 
@@ -128,7 +128,7 @@ The **KPI reference** tab lists all 27 catalog entries, including those whose so
 
 The story highlights up to five positive resource costs per subscription, currency, and period. **All returned resource costs** opens the complete returned resource table, including credits and any resource IDs and periods the data source provided. Source query limits can omit resources; this view doesn't prove the inventory is complete. A high cost alone isn't evidence of waste.
 
-By default, reports go under the current user's local application data directory, in `FinOpsToolkit/Multitool/Reports`. On Windows, that's usually `%LOCALAPPDATA%\FinOpsToolkit\Multitool\Reports`. Each run creates a timestamped, uniquely named subfolder. The terminal prints its full path. `-OutputPath` selects a different local parent folder; it doesn't replace reports from an earlier run.
+By default, reports go under the current user's local application data directory, in `FinOpsToolkit/Explorer/Reports`. On Windows, that's usually `%LOCALAPPDATA%\FinOpsToolkit\Explorer\Reports`. Each run creates a timestamped, uniquely named subfolder. The terminal prints its full path. `-OutputPath` selects a different local parent folder; it doesn't replace reports from an earlier run.
 
 The run folder allows access only to the current user through filesystem permissions. On Unix, directories use mode `700` and files use mode `600`. The tool rejects Git repositories and worktrees, UNC paths, mapped Windows network drives, symbolic links, and junctions, and adds an ignore-all `.gitignore` as a backup against accidental staging. Unix network mounts aren't detected; choose a path on a local filesystem. If it can't safely save, it reports an error and keeps the scan results in `$FinOpsResults`; it doesn't fall back to the working directory.
 
@@ -295,7 +295,7 @@ Carbon reports retain available detail when another report section fails, but le
 
 ## FinOps KPI coverage
 
-The scan modules map directly to [FinOps Foundation KPIs](https://www.finops.org/finops-kpis/). Each scan answers a KPI question directly, and the `finops-multitool` agent skill routes a natural-language question to the matching investigation. A few examples of question → output:
+The scan modules map directly to [FinOps Foundation KPIs](https://www.finops.org/finops-kpis/). Each scan answers a KPI question directly, and the `finops-explorer` agent skill routes a natural-language question to the matching investigation. A few examples of question → output:
 
 ### Percentage of Legacy Resource → legacy resources
 
