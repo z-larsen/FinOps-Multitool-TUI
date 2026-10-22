@@ -3,7 +3,7 @@
 
 An **unofficial, standalone preview snapshot** of the FinOps Explorer terminal
 UI. Download it to run interactive FinOps scans against Azure subscriptions.
-This is not an official Microsoft release or the separate FinOps Explorer Desktop app.
+This is not an official Microsoft release.
 
 The runtime uses the **v15.0-dev-wip.20261001.1** version label. Preview status does not
 imply production support or complete live-data validation. This repository
